@@ -11,6 +11,8 @@ class Url < ApplicationRecord
     end
   end
 
+  private
+
   def valid_url
     if long_url.blank?
       errors.add(:long_url, :blank)

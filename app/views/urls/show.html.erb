@@ -1,3 +1,12 @@
+<script>
+    function copyToClipboard() {
+        var copyText = document.querySelector("#short-link").href;
+        navigator.clipboard.writeText(copyText).then(() => {
+            alert("Copied to clipboard");
+        });
+    }
+</script>
+
 <div class="grid grid-cols-1">
   <div>
     <p style="color: green"><%= notice %></p>
@@ -9,7 +18,8 @@
 
   <div id="<%= dom_id @url %>">
       <div class="p-4">Long URL <%= @url.long_url %></div>
-      <div class="p-4">Visit this URL <%= link_to "http://localhost:3000/#{@url.short_url}", @url.short_url %></div>
+      <div class="p-4">Visit this URL <%= link_to "http://localhost:3000/#{@url.short_url}", @url.short_url, id: "short-link" %></div>
+      <button onclick="copyToClipboard()" class="btn btn-primary">Copy Link</button>
   </div>
 
   <div>

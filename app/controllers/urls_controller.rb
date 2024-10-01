@@ -20,7 +20,6 @@ class UrlsController < ApplicationController
     @url = Url.new
   end
 
-  # POST /urls or /urls.json
   def create
     @url = Url.new(url_params) do |u|
       u.short_url = MicroToken.generate(8, :alpha)
