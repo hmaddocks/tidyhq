@@ -12,7 +12,7 @@ class UrlsController < ApplicationController
       @url = Url.find(params[:id])
     when /[a-zA-Z0-9]+/
       url = Url.find_by(short_url: params[:id])
-      redirect_to url.original_url, allow_other_host: true, target: '_blank'
+      redirect_to url.original_url, allow_other_host: true
     end
   end
 

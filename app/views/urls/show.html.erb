@@ -18,7 +18,7 @@
 
   <div id="<%= dom_id @url %>">
       <div class="p-4">Long URL <%= @url.long_url %></div>
-      <div class="p-4">Visit this URL <%= link_to "http://localhost:3000/#{@url.short_url}", @url.short_url, id: "short-link" %></div>
+      <div class="p-4">Visit this URL <%= link_to "http://localhost:3000/#{@url.short_url}", @url.short_url, id: "short-link", target: '_blank' %></div>
       <button onclick="copyToClipboard()" class="btn btn-primary">Copy Link</button>
   </div>
 
