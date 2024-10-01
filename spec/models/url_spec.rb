@@ -26,4 +26,20 @@ describe Url, type: :model do
       end
     end
   end
+
+  describe '#original_url' do
+    context "when the protocol is missing" do
+      it "returns the url with http:// prepended" do
+        url = Url.new(long_url: "example.com")
+        expect(url.original_url).to eq("http://example.com")
+      end
+    end
+
+    context "when the protocol is present" do
+      it "returns the url as-is" do
+        url = Url.new(long_url: "http://example.com")
+        expect(url.original_url).to eq("http://example.com")
+      end
+    end
+  end
 end
