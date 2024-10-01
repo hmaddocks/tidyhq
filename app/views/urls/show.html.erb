@@ -1,10 +1,18 @@
-<p style="color: green"><%= notice %></p>
+<div class="grid grid-cols-1">
+  <div>
+    <p style="color: green"><%= notice %></p>
+  </div>
 
-<%= render @url %>
+  <div>
+    <%= link_to "New link", root_path, class: "p-4" %>
+  </div>
 
-<div>
-  <%= link_to "Edit this url", edit_url_path(@url) %> |
-  <%= link_to "Back to urls", urls_path %>
+  <div id="<%= dom_id @url %>">
+      <div class="p-4">Long URL <%= @url.long_url %></div>
+      <div class="p-4">Visit this URL <%= link_to "http://localhost:3000/#{@url.short_url}", @url.short_url %></div>
+  </div>
 
-  <%= button_to "Destroy this url", @url, method: :delete %>
+  <div>
+    <%= button_to "Delete this URL", @url, method: :delete, class: "p-4 mt-2 rounded-lg py-3 px-5 bg-red-500 text-white hover:bg-red-600 font-medium" %>
+  </div>
 </div>

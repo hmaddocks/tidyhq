@@ -1,27 +1,30 @@
-class UrlsController < ApplicationController
-  before_action :set_url, only: %i[ show edit update destroy ]
+# frozen_string_literal: true
 
+class UrlsController < ApplicationController
   # GET /urls or /urls.json
   def index
     @urls = Url.all
   end
 
-  # GET /urls/1 or /urls/1.json
   def show
+    case params[:id]
+    when /\d+/
+      @url = Url.find(params[:id])
+    when /[a-zA-Z0-9]+/
+      url = Url.find_by(short_url: params[:id])
+      redirect_to "http://#{url.original_url}", allow_other_host: true, target: '_blank'
+    end
   end
 
-  # GET /urls/new
   def new
     @url = Url.new
   end
 
-  # GET /urls/1/edit
-  def edit
-  end
-
   # POST /urls or /urls.json
   def create
-    @url = Url.new(url_params)
+    @url = Url.new(url_params) do |u|
+      u.short_url = MicroToken.generate(8, :alpha)
+    end
 
     respond_to do |format|
       if @url.save
@@ -34,35 +37,19 @@ class UrlsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /urls/1 or /urls/1.json
-  def update
-    respond_to do |format|
-      if @url.update(url_params)
-        format.html { redirect_to @url, notice: "Url was successfully updated." }
-        format.json { render :show, status: :ok, location: @url }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @url.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /urls/1 or /urls/1.json
   def destroy
-    @url.destroy!
+    url = Url.find(params[:id])
+    url.destroy!
 
     respond_to do |format|
-      format.html { redirect_to urls_path, status: :see_other, notice: "Url was successfully destroyed." }
+      format.html { redirect_to root_path, status: :see_other, notice: "Url was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_url
-      @url = Url.find(params[:id])
-    end
-    def url_params
-      params.require(:url).permit(:long_url)
-    end
+
+  def url_params
+    params.require(:url).permit(:long_url)
+  end
 end
